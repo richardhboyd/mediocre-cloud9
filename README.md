@@ -1,8 +1,10 @@
 # mediocre-cloud9
 
-# CodeBuild
+This is my collection of mediocre Cloud9 tips.
 
-## [CodeBuild Local](https://github.com/aws/aws-codebuild-docker-images)
+## CodeBuild
+
+### [CodeBuild Local](https://github.com/aws/aws-codebuild-docker-images)
 I want to test my `buildspec.yml` file wasting a bunch of time/money on actually running CodeBuild.
 
 
@@ -18,11 +20,12 @@ cd /your/local/code/directory
 path/to/aws-codebuild-docker-images/local-builds/codebuild_build.sh -i $DOCKER_ID -a $(pwd)/artifacts -m -p isengard_example
 ```
 
-## CDK
+### CDK
 
-### Building CDK Constructs with Cloud9
+#### Building CDK Constructs with Cloud9
 
 ```bash
+GITHUB_ALIAS=richardhboyd
 # Get the latest version of Node
 VERSION=$(nvm ls-remote --lts | grep Latest | tail -1 | grep -o "\(v[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)")
 nvm install $VERSION
@@ -30,25 +33,25 @@ nvm install $VERSION
 npm uninstall -g typescript
 npm install -g typescript
 
-sudo ln -s /usr/bin/pip-3.6 /usr/bin/pip3 # needed because of one of the tests inside CDK needs pip3
-
 # Apparently dotnet is needed now too
 sh -c "$(curl -fsSL https://dot.net/v1/dotnet-install.sh)"
 export PATH=$PATH:/home/ec2-user/.dotnet
 
-git clone https://github.com/[your_github_alias]/aws-cdk.git
+git clone git@github.com:$GITHUB_ALIAS/aws-cdk.git
 cd aws-cdk/
-git remote -v
 git remote add upstream https://github.com/aws/aws-cdk.git
 # If you've diverged, I usually check out the last common commit
 # git checkout [HASH]
-git checkout -b cloud9
+git fetch upstream
 git merge upstream/master
+git checkout -b feature_branch
+# Make your changes
+docker build -t aws-cdk .
 ```
 
-# AWS SAM
+## AWS SAM
 
-## Update SAM
+### Update SAM
 
 ```bash
 # sudo localedef -i en_US -f UTF-8 en_US.UTF-8 # Likely not needed
@@ -67,9 +70,9 @@ ln -sf $(which sam) ~/.c9/bin/sam
 ls -la ~/.c9/bin/sam
 ```
 
-# Python
+## Python
 
-## Update Python Version
+### Update Python Version
 
 ```bash
 sudo -u root -s
@@ -96,9 +99,9 @@ exit
 #TODO add /home/ec2-user/.local/lib/python3.8/site-packages to 'special' PATH
 ```
 
-# GitHub and SSH
+## GitHub and SSH
 
-## SSH Keys
+### SSH Keys
 From my laptop I run
 
 ```bash
@@ -122,20 +125,42 @@ echo "IdentityFile ${HOME_DIR}.ssh/github" > ${HOME_DIR}.ssh/config
 chmod 400 ${HOME_DIR}.ssh/config
 ```
 
-# Hugo
+## Hugo
 
-Running Hugo on Cloud9
+### Running Hugo on Cloud9
 
 ```
 wget https://github.com/gohugoio/hugo/releases/download/v0.62.1/hugo_0.62.1_Linux-64bit.tar.gz
 tar -xvzf hugo_0.62.1_Linux-64bit.tar.gz
 sudo mv hugo /usr/local/bin/
 
-PREVIEW_URL="https://$C9_PID.vfs.cloud9.us-west-2.amazonaws.com/"
+REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | sed -n 's/.*"region" : "\([a-z0-9-]*\)",/\1/p')
+PREVIEW_URL="https://$C9_PID.vfs.cloud9.$REGION.amazonaws.com/"
 hugo serve --bind=0.0.0.0 -p 8080 -b $PREVIEW_URL --appendPort=false --disableFastRender
 ```
 
-# Extra
+## Java
 
-## Links to examples of people using Cloud9
+### Corretto 11
+
+```bash
+sudo -u root -s
+curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo
+yum install -y java-11-amazon-corretto-devel
+exit
+```
+
+### Maven
+```bash
+sudo -u root -s
+wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+yum install -y apache-maven
+exit
+```
+## Extra
+
+### Links to examples of people using Cloud9
+- AWS Cloud9 [Launch Blog](https://aws.amazon.com/blogs/aws/aws-cloud9-cloud-developer-environments/) by [Randall Hunt](https://twitter.com/jrhunt)
 - [Field Notes: Optimize your Java application for AWS Lambda with Quarkus](https://aws.amazon.com/blogs/architecture/field-notes-optimize-your-java-application-for-aws-lambda-with-quarkus/) by [Sascha Moellering](https://twitter.com/sascha242) and [Steffen Grunwald](https://twitter.com/steffeng)
+- [Building a Meeting Application using the Amazon Chime SDK](https://aws.amazon.com/blogs/business-productivity/building-a-meeting-application-using-the-amazon-chime-sdk/) by Doug Lawty
