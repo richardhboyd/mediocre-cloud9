@@ -163,4 +163,6 @@ exit
 ### Links to examples of people using Cloud9
 - AWS Cloud9 [Launch Blog](https://aws.amazon.com/blogs/aws/aws-cloud9-cloud-developer-environments/) by [Randall Hunt](https://twitter.com/jrhunt)
 - [Field Notes: Optimize your Java application for AWS Lambda with Quarkus](https://aws.amazon.com/blogs/architecture/field-notes-optimize-your-java-application-for-aws-lambda-with-quarkus/) by [Sascha Moellering](https://twitter.com/sascha242) and [Steffen Grunwald](https://twitter.com/steffeng)
+- [How to Run Headless Front-End Tests with AWS Cloud9 and AWS CodeBuild](https://aws.amazon.com/blogs/devops/how-to-run-headless-front-end-tests-with-aws-cloud9-and-aws-codebuild/) by [Eric Beard](https://twitter.com/EricZBeard)
+- [Deploying a serverless application using AWS CDK](https://aws.amazon.com/blogs/devops/deploying-a-serverless-application-using-aws-cdk/) by [Georges Leschener](https://www.linkedin.com/in/georges-leschener-6872458/) and [Luis Lopez Soria](https://www.linkedin.com/in/luis-l-5005718b/)
 - [Building a Meeting Application using the Amazon Chime SDK](https://aws.amazon.com/blogs/business-productivity/building-a-meeting-application-using-the-amazon-chime-sdk/) by Doug Lawty
