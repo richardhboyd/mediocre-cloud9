@@ -2,6 +2,19 @@
 
 This is my collection of mediocre Cloud9 tips.
 
+# Table of Contents
+
+- [CodeBuild](#Codebuild)
+- [CDK](#CDK)
+- [AWS SAM](#AWS-SAM)
+- [Python](#Python)
+- [GitHub and SSH](#GitHub-and-SSH)
+- [Hugo](#Hugo)
+- [Corretto](#Corretto)
+- [Extra](#Extra)
+
+---
+
 ## CodeBuild
 
 ### [CodeBuild Local](https://github.com/aws/aws-codebuild-docker-images)
@@ -55,12 +68,16 @@ docker build -t aws-cdk .
 
 ```bash
 # sudo localedef -i en_US -f UTF-8 en_US.UTF-8 # Likely not needed
+# Need the exports for env filtering due to issue in Brew
+# https://github.com/Linuxbrew/brew/issues/568#issuecomment-357527644
+# /home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/brew.sh: line 15: warning: setlocale: LC_ALL: cannot change locale (C.UTF-8): No such file or directory
+# /home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/brew.sh: line 15: warning: setlocale: LC_ALL: cannot change locale (C.UTF-8)
 export HOMEBREW_NO_ENV_FILTERING=1
 CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
 test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
-echo "eval \$($(/home/linuxbrew/.linuxbrew/bin/brew --prefix)/bin/brew shellenv)" >>~/.profile
+test -r ~/.bash_profile && echo -e "export HOMEBREW_NO_ENV_FILTERING=1\neval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
+echo -e "export HOMEBREW_NO_ENV_FILTERING=1\neval \$($(/home/linuxbrew/.linuxbrew/bin/brew --prefix)/bin/brew shellenv)" >>~/.profile
 npm uninstall -g aws-sam-local
 sudo pip uninstall aws-sam-cli -y
 sudo rm -rf $(which sam)
@@ -139,7 +156,7 @@ PREVIEW_URL="https://$C9_PID.vfs.cloud9.$REGION.amazonaws.com/"
 hugo serve --bind=0.0.0.0 -p 8080 -b $PREVIEW_URL --appendPort=false --disableFastRender
 ```
 
-## Java
+## Corretto
 
 ### Corretto 11
 
