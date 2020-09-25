@@ -158,12 +158,13 @@ hugo serve --bind=0.0.0.0 -p 8080 -b $PREVIEW_URL --appendPort=false --disableFa
 
 ## Corretto
 
-### Corretto 11
+### Corretto 11/15
 
 ```bash
 sudo -u root -s
+JAVA_VERSION=15
 curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo
-yum install -y java-11-amazon-corretto-devel
+yum install -y java-${JAVA_VERSION}-amazon-corretto-devel
 exit
 ```
 
